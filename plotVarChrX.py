@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 
 def plotVarChrX(vcfFile):
-    vcf_reader = vcfpy.Reader(filename=vcfFile)
+    vcf_reader = vcfpy.Reader.from_path(vcfFile)
     pos = []
     vaf = []
     chrX_len = 156040895
