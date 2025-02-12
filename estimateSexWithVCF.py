@@ -27,8 +27,8 @@ def traiter_vcf(file):
 def listVcfFiles(dir):
     dir = Path(dir)
     vcfFiles = [file for file in dir.glob("*.vcf")] + [file for file in dir.glob("*.vcf.gz")]
-    if fichiers_vcf:
-        for fichier in fichiers_vcf:
+    if vcfFiles:
+        for fichier in vcfFiles:
             traiter_vcf(fichier)
     else:
         for subdir in dir.iterdir():
@@ -37,4 +37,4 @@ def listVcfFiles(dir):
             else:
                 exit("No VCF files from this directory")
 
-lister_fichiers_vcf(".")
+listVcfFiles(".")
