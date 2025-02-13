@@ -1,19 +1,22 @@
 #!/usr/bin/env python
 import sys
 import os
-import vcf
+import vcfpy
 from pathlib import Path
 
-def traiter_vcf(file):
+def traiter_vcf(vcfFile):
     # Remplacez cette fonction par votre traitement spécifique
-    print(f"####### Counting in Chr X and Y for : {file}")
-    vcf_reader = vcf.Reader(filename=file)
+    if "/" in vcfFile:
+        vcfFile = vcfFile.split("/")[-1]
+    vcfName = vcfFile.split(".")[0]
+    print(f"####### Counting in Chr X and Y for : {vcfFile}")
+    vcf_reader = vcfpy.Reader.from_path(vcfFile)
     homozygous_count = 0
     heterozygous_count = 0
     for record in vcf_reader:
-        if record.CHROM in ['X', 'Y']:
-            for sample in record.samples:
-                genotype = sample['GT']
+        if record.CHROM in ['chrX', 'chrY']:
+            for call in record.calls:
+                genotype = call.data.get('GT')
                 if genotype is not None:
                     if genotype == '1/1' or genotype == '1|1':
                         homozygous_count += 1
@@ -29,7 +32,7 @@ def listVcfFiles(dir):
     vcfFiles = [file for file in dir.glob("*.vcf")] + [file for file in dir.glob("*.vcf.gz")]
     if vcfFiles:
         for fichier in vcfFiles:
-            traiter_vcf(fichier)
+            traiter_vcf(str(fichier))
     else:
         for subdir in dir.iterdir():
             if subdir.is_dir():
@@ -37,4 +40,4 @@ def listVcfFiles(dir):
             else:
                 exit("No VCF files from this directory")
 
-listVcfFiles(".")
+listVcfFiles(sys.argv[1])

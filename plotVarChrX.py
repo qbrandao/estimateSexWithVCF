@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 
 # Activation du mode interactif pour eviter l'arret du script quand un plot est affiche
-plt.ion()
+#plt.ion()
 
 
 def plotVarChrX(vcfFile):
@@ -32,7 +32,7 @@ def plotVarChrX(vcfFile):
     plt.title(vcfName)
     plt.axis((0, chrX_len, 0, 1.2))
     plt.savefig(vcfName+".plotChrX.png")
-    plt.show()
+    #plt.show()
 
 def listVcfFiles(dir):
     dir = Path(dir)
