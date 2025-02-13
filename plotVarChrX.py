@@ -10,6 +10,8 @@ def plotVarChrX(vcfFile):
     pos = []
     vaf = []
     chrX_len = 156040895
+    if "/" in vcfFile:
+        vcfFile = vcfFile.split("/")[-1]
     vcfName = vcfFile.split(".")[0]
     for record in vcf_reader:
         if record.CHROM == 'chrX':
@@ -31,7 +33,7 @@ def listVcfFiles(dir):
     vcfFiles = [file for file in dir.glob("*.vcf")] + [file for file in dir.glob("*.vcf.gz")]
     if vcfFiles:
         for fichier in vcfFiles:
-            plotVarChrX(fichier)
+            plotVarChrX(str(fichier))
     else:
         for subdir in dir.iterdir():
             if subdir.is_dir():
