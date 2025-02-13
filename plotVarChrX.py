@@ -26,7 +26,7 @@ def plotVarChrX(vcfFile):
                     alt = int(call.data.get('AD')[1])
                     VAF = alt/DP
                     vaf.append(float(VAF))
-    plt.plot(pos, vaf, 'ro')
+    plt.plot(pos, vaf, 'r+')
     plt.xlabel('ChrX position') 
     plt.ylabel('VAF')
     plt.title(vcfName)
