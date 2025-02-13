@@ -39,4 +39,4 @@ def listVcfFiles(dir):
             else:
                 exit("No VCF files from this directory")
 
-listVcfFiles(".")
+listVcfFiles(sys.argv[1])
