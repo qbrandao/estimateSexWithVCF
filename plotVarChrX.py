@@ -10,20 +10,20 @@ def plotVarChrX(vcfFile):
     pos = []
     vaf = []
     chrX_len = 156040895
+    vcfName = vcfFile.split(".")[0]
     for record in vcf_reader:
         if record.CHROM == 'chrX':
-            for sample in record.samples:
-                for call in record.calls:
-                    #FILTER
-                    passLesFiltres = 1
-                    if passLesFiltres:
-                        pos.append(record.POS)
-                        DP = int(call.data.get('DP'))
-                        alt = int(call.data.get('AD')[1])
-                        VAF = alt/DP
-                        vaf.append(float(VAF))
+            for call in record.calls:
+                if call.data.get('DP') > 0:
+                    pos.append(record.POS)
+                    DP = int(call.data.get('DP'))
+                    alt = int(call.data.get('AD')[1])
+                    VAF = alt/DP
+                    vaf.append(float(VAF))
     plt.plot(pos, vaf, 'ro')
+    plt.set(xlabel='ChrX position', ylabel='VAF',title=vcfName)
     plt.axis((0, chrX_len, 0, 1.2))
+    plt.savefig(vcfName+".plotChrX.png")
     plt.show()
 
 def listVcfFiles(dir):
