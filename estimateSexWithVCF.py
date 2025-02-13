@@ -17,7 +17,7 @@ def traiter_vcf(vcfFile):
         if record.CHROM == 'chrX':
             for call in record.calls:
                 genotype = call.data.get('GT')
-                if genotype is not None:
+                if genotype is not None and call.data.get('DP') > 20:
                     if genotype == '1/1' or genotype == '1|1':
                         homozygous_count += 1
                     elif genotype == '0/1' or genotype == '0|1' or genotype == '1|0' or genotype == '1/2' or genotype == '1|2' or genotype == '2|1':
@@ -36,7 +36,6 @@ def plotPatients(listPat,listHtz):
     #plt.title("Plot of all vcf")
     plt.axis((0, len(listPat), 0, max(listHtz)))
     plt.savefig("VCFs.plot_ChrX_Htz.png")
-
 
 def listVcfFiles(dir):
     dir = Path(dir)
