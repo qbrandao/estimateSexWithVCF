@@ -47,4 +47,5 @@ def listVcfFiles(dir):
             else:
                 exit("No VCF files from this directory")
 
-listVcfFiles(sys.argv[1])
+if __name__ == "__main__":
+    listVcfFiles(sys.argv[1])

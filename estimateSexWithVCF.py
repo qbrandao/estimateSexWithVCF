@@ -2,19 +2,19 @@
 import sys
 import os
 import vcfpy
+import matplotlib.pyplot as plt
 from pathlib import Path
 
 def traiter_vcf(vcfFile):
-    # Remplacez cette fonction par votre traitement spécifique
     if "/" in vcfFile:
         vcfFile = vcfFile.split("/")[-1]
     vcfName = vcfFile.split(".")[0]
-    print(f"####### Counting in Chr X and Y for : {vcfFile}")
+    print(f"####### Counting in Chr X for : {vcfFile}")
     vcf_reader = vcfpy.Reader.from_path(vcfFile)
     homozygous_count = 0
     heterozygous_count = 0
     for record in vcf_reader:
-        if record.CHROM in ['chrX', 'chrY']:
+        if record.CHROM == 'chrX':
             for call in record.calls:
                 genotype = call.data.get('GT')
                 if genotype is not None:
@@ -24,8 +24,19 @@ def traiter_vcf(vcfFile):
                         heterozygous_count += 1
     print(f'Homozygous variants: {homozygous_count}')
     print(f'Heterozygous variants: {heterozygous_count}')
-    print(f'Ratio Hom/All: {heterozygous_count}')
-    print(f'Ratio Het/All: {heterozygous_count}')
+    #print(f'Ratio Hom/All: {heterozygous_count}')
+    #print(f'Ratio Het/All: {heterozygous_count}')
+    listPat.append(vcfName)
+    listHtz.append(heterozygous_count)
+
+def plotPatients(listPat,listHtz):
+    plt.plot(listPat, listHtz, 'r+')
+    plt.xlabel('Patients') 
+    plt.ylabel('Number of Heterozygous variants')
+    #plt.title("Plot of all vcf")
+    plt.axis((0, len(listPat), 0, max(listHtz)))
+    plt.savefig("VCFs.plot_ChrX_Htz.png")
+
 
 def listVcfFiles(dir):
     dir = Path(dir)
@@ -40,4 +51,8 @@ def listVcfFiles(dir):
             else:
                 exit("No VCF files from this directory")
 
-listVcfFiles(sys.argv[1])
+if __name__ == "__main__":
+    listPat = []
+    listHtz = []
+    listVcfFiles(sys.argv[1])
+    plotPatients(listPat,listHtz)
