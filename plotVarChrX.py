@@ -23,7 +23,9 @@ def plotVarChrX(vcfFile):
                     VAF = alt/DP
                     vaf.append(float(VAF))
     plt.plot(pos, vaf, 'ro')
-    plt.set(xlabel='ChrX position', ylabel='VAF',title=vcfName)
+    plt.xlabel('ChrX position') 
+    plt.ylabel('VAF')
+    plt.title(vcfName)
     plt.axis((0, chrX_len, 0, 1.2))
     plt.savefig(vcfName+".plotChrX.png")
     plt.show()
