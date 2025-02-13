@@ -5,6 +5,10 @@ import vcfpy
 import matplotlib.pyplot as plt
 from pathlib import Path
 
+# Activation du mode interactif pour eviter l'arret du script quand un plot est affiche
+plt.ion()
+
+
 def plotVarChrX(vcfFile):
     vcf_reader = vcfpy.Reader.from_path(vcfFile)
     pos = []
@@ -16,7 +20,7 @@ def plotVarChrX(vcfFile):
     for record in vcf_reader:
         if record.CHROM == 'chrX':
             for call in record.calls:
-                if call.data.get('DP') > 0:
+                if call.data.get('DP') > 20:
                     pos.append(record.POS)
                     DP = int(call.data.get('DP'))
                     alt = int(call.data.get('AD')[1])
